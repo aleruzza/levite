@@ -1,5 +1,9 @@
 package com.ruzza.alessandro.levite;
 
-public class Rete {
+import java.util.ArrayList;
 
+public class Rete {
+	private ArrayList<ArrayList<Neuron>> net;
+	
+	
 }

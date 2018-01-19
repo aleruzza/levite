@@ -43,7 +43,7 @@ public class Neuron {
 	private float funzioneDiAttivazione(float inp)
 	{
 		//funzione di attivazione
-		//!/(1+e^-a(x+1/2))
+		//1/(1+e^-a(x+1/2))
 		float ris = (float) ((float) 1/(1+Math.pow(Math.E, -alpha*(inp-soglia_attivazione))));
 		return ris;
 	}
