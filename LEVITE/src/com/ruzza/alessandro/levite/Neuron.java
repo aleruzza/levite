@@ -10,11 +10,11 @@ public class Neuron {
 	
 	public Neuron(ArrayList<Float> gene)
 	{
+		//il gene ha una grandezza uguale a
+		// numero di dendriti + 1
 		//la soglia di attivazione è il primo valore del gene
 		this.soglia_attivazione = gene.get(0);
-		this.alpha = gene.get(1);
 		gene.remove(0);
-		gene.remove(1);
 		this.pesi = gene;
 		
 	}

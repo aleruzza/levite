@@ -8,6 +8,7 @@ public class Layer {
 	
 	public Layer(ArrayList<Float> gene, int nn)
 	{
+		//la dimensione del gene è dimensione_gene_neurone*n_neuroni
 		neurons = new ArrayList<Neuron>();
 		ArrayList<Float> val = new ArrayList<>();
 		int d = gene.size()/nn;
