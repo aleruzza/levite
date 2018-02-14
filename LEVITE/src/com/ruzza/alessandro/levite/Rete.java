@@ -7,10 +7,10 @@ public class Rete {
 	//Da implementare invece nell'Incubatore
 	
 	//COSTANTI CARATTERISTICHE DI CIASCUNA RETE NEURALE
-	private final int N_NEUR_INPUT = 4;
-	private final int N_NEUR_LAYER = 5; //ogni layer ha lo stesso numero di neuroni
-	private final int N_NEUR_OUTPUT = 4;
-	private final int N_HLAYER = 3;
+	public static final int N_NEUR_INPUT = 4;
+	public static final int N_NEUR_LAYER = 5; //ogni layer ha lo stesso numero di neuroni
+	public static final int N_NEUR_OUTPUT = 4;
+	public static final int N_HLAYER = 3;
 	
 	private ArrayList<Layer> net;
 	private ArrayList<Float> DNA;
@@ -52,23 +52,33 @@ public class Rete {
 		net.add( new Layer( ((ArrayList<Float>) DNA.subList(i, f)), N_NEUR_OUTPUT));
 	}
 	
-	private ArrayList<Float> getInput(){
-		//TODO: funzione che riceva gli input (con uno specifico segnale in caso
-		//		di interruzione, con relativo valore di fitness)
-		
+	private ArrayList<Float> sendOutput_getInput(ArrayList<Float> out){
+		/*  TODO: funzione che spedisce gli output e attende per ricevere gli input
+		 *  (con uno specifico segnale in caso
+		 *	di interruzione (primo valore array < 0), con relativo valore di fitness 
+		 * 	(modulo del codice di interruzione)
+		 */		
 		return null;
 	}
 	
-	private void sendOutput(ArrayList<Float> out)
-	{
-		//TODO: funzione che spedisce gli output
-	}
-	
+
 	public float run()
 	{
-		//TODO:	funzione che fa "giocare" la rete neurale. 
+		//TODO:	funzione che fa funzionare la rete neurale. 
 		//		Restituisce il valore di fitness.
-		return 0;
+		ArrayList<Float> inp = this.sendOutput_getInput(null);
+		ArrayList<Float> res = inp;
+		while(inp.get(0)>0)
+		{
+			for(int i=0;i<N_HLAYER+2;i++) {
+				inp = res;
+				res = net.get(0).activate(inp);
+			}
+			inp = this.sendOutput_getInput(res);
+		}
+		
+		float result = -(inp.get(0));
+		return result;
 	}
 	
 }
