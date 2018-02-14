@@ -31,10 +31,10 @@ La funzione di attivazione che ho scelto è la seguente:
 ![F_attivazione](/images/f_att.gif)
 
 * y - risultato in output
-* \alpha - parametro che influenza la derivata prima della funzione (fissato da codice)
+* α - parametro che influenza la derivata prima della funzione (fissato da codice)
 * x - valore fornito in input alla funzione
-* \gamma - soglia di attivazione
+* γ - soglia di attivazione
 
-La funzione ha il seguente grafico: (\alpha = 50, \gamma = 0.5)
+La funzione ha il seguente grafico: (α = 50, γ = 0.5)
 
 ![F_attivazione](/images/graph_f_att.png)
