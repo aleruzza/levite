@@ -38,3 +38,23 @@ La funzione di attivazione che ho scelto è la seguente:
 La funzione ha il seguente grafico: (α = 50, γ = 0.5)
 
 ![F_attivazione](/images/graph_f_att.png)
+
+## 1.2 Layer
+Classe Layer.java
+
+La classe Layer viene utilizzata per gestire uno strato della rete neurale. Ciascun neurone di un medesimo strato riceve in input gli stessi valori. Allo stesso modo l'output inviato ai neuroni del Layer successivo è costituito da un array contenente i valori di uscita di ciascun neurone del layer precedente.
+
+Ciascun Layer è caratterizzato da:
+* un array di Neuroni
+
+__1.2.1 funzionamento__
+
+Il costruttore della classe riceve come parametro un array di valori (float) corrispondenti, in ordine, ai pesi dei singoli neuroni. Il costruttore si occupa quindi di suddividerli instanziando tutti i Neuroni del Layer.
+
+Il metodo activate() riceve come parametro un array contenente i valori ricevuti dal layer superiore, si occupa quindi di passare a ciascun neurone tali valori tramite il metodo Neuron.run() ottenendo e salvando i valori di ritorno. Questi vengono quindi restituiti dal metodo all'istanza che lo ha richiamato.
+
+## 1.3 Rete
+Classe Rete.java
+
+
+
