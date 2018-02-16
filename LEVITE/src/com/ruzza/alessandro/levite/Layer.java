@@ -41,4 +41,13 @@ public class Layer {
 		}
 		return result;
 	}
+	
+	public void printData()
+	{
+		for(int i=0;i<neurons.size();i++)
+		{
+			System.out.println("Neurone "+i);
+			neurons.get(i).printData();
+		}
+	}
 }

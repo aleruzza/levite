@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Neuron {
 
 	private float soglia_attivazione;
-	private float alpha; //TODO: scegliere intervallo
+	private float alpha = 100; //TODO: scegliere intervallo
 	private ArrayList<Float> pesi;
 	
 	public Neuron(ArrayList<Float> gene)
@@ -46,5 +46,13 @@ public class Neuron {
 		//1/(1+e^-a(x+1/2))
 		float ris = (float) ((float) 1/(1+Math.pow(Math.E, -alpha*(inp-soglia_attivazione))));
 		return ris;
+	}
+	
+	public void printData()
+	{
+		System.out.print("sa: "+soglia_attivazione+"; pesi: ");
+		for(Float f: pesi)
+			System.out.print(f);
+		System.out.println();
 	}
 }

@@ -17,6 +17,7 @@ public class Rete {
 	
 	public Rete(ArrayList<Float> DNA)
 	{
+		net = new ArrayList<Layer>();
 		this.DNA = DNA;
 		int i,f, step; //rappresentano dei segnalibri per orientarsi nel DNA
 		
@@ -27,7 +28,7 @@ public class Rete {
 		//N_NEUR_INPUT*(1+1)
 		step = N_NEUR_INPUT*(1+1);
 		i = 0; f = i + step;
-		net.add( new Layer( ((ArrayList<Float>) DNA.subList(i, f)), N_NEUR_INPUT));
+		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_INPUT));
 		
 		//genero gli hidden layer
 		//il primo hidden layer ha un gene lungo
@@ -37,7 +38,8 @@ public class Rete {
 		{
 			i = f+1;
 			f = i + step;
-			net.add( new Layer( ((ArrayList<Float>) DNA.subList(i, f)), N_NEUR_LAYER));
+			
+			net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_LAYER));
 			//gli altri hidden layer hanno un gene lungo
 			//N_NEUR_LAYER*(N_NEUR_LAYER+1)
 			step = N_NEUR_LAYER*(N_NEUR_LAYER+1);
@@ -49,7 +51,7 @@ public class Rete {
 		step = N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 		i = f+1;
 		f = i + step;
-		net.add( new Layer( ((ArrayList<Float>) DNA.subList(i, f)), N_NEUR_OUTPUT));
+		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_OUTPUT));
 	}
 	
 	private ArrayList<Float> sendOutput_getInput(ArrayList<Float> out){
@@ -81,4 +83,12 @@ public class Rete {
 		return result;
 	}
 	
+	public void printData()
+	{
+		for(int i=0;i<net.size();i++)
+		{
+			System.out.println("Layer "+i);
+			net.get(i).printData();
+		}
+	}
 }

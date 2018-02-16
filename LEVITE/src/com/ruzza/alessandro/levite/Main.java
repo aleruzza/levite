@@ -1,7 +1,7 @@
 package com.ruzza.alessandro.levite;
 
 import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,13 +15,33 @@ public class Main {
 
 	private static void avviaTest() {
 		Rete rete;
+		
+		//ottengo il DNA
 		ArrayList<Float> inp =  new ArrayList<>();
 		try {
-		Scanner tast = new Scanner(new FileInputStream("tdata.txt"));
+			//il file deve finire con un numero negativo
+			InputStreamReader tast = new InputStreamReader(new FileInputStream("/home/arkx/TScrivania/data.txt"));
+			BufferedReader buff = new BufferedReader(tast);
+			float n = Float.parseFloat(buff.readLine());
+			while(n>0)
+			{
+				inp.add(n);
+				n = Float.parseFloat(buff.readLine());
+			}
 		}
 		catch (Exception e) {
+			System.out.println(e);
 			inp = getDataFromKeyboard();
 		}
+		
+		//do vita alla rete
+		rete = new Rete(inp);
+		
+		System.out.println("La rete è nata");
+		
+		//visualizzo i dati della rete
+		rete.printData();
+		
 		return;
 	}
 	
