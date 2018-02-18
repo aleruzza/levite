@@ -1,6 +1,7 @@
 package com.ruzza.alessandro.levite;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Rete {
 	//Questa classe non contiene la logica dell'algoritmo genetico.
@@ -63,7 +64,7 @@ public class Rete {
 		 *	di interruzione (primo valore array < 0), con relativo valore di fitness 
 		 * 	(modulo del codice di interruzione)
 		 */		
-		
+		ArrayList<Float> in = new ArrayList<>();
 		if(out==null)
 		{
 			//La rete inizia
@@ -72,11 +73,19 @@ public class Rete {
 		else
 		{
 			//invia gli output 
-			System.out.println(ConsoleColors.BLUE_BOLD + "Invio gli output" + ConsoleColors.RESET);
+			System.out.println("Ecco gli output");
+			for(Float o: out)
+				System.out.print(o+"\t");
 		}
 		
 		//ottiene gli input e li ritorna
-		return null;
+		Scanner scan = new Scanner(System.in);
+		for(int i=0;i<N_NEUR_INPUT;i++)
+		{
+			System.out.print("Inserisci input " + i + " (NB [0;1]) : ");
+			in.add(scan.nextFloat());
+		}
+		return in;
 	}
 	
 
