@@ -9,25 +9,48 @@ public class Main {
 
 	
 	public static void main(String[] args) {
-				avviaTest();
+				if(args.length==0)
+						showHelp();
+				else
+				{
+					switch(args[0])
+					{
+						case "-tc":
+							avviaTestCreazione();
+							break;
+						case "-t":
+							avviaTestRete();
+							break;
+						default:
+							showHelp();
+					}
+				}
+				
 				return;
 	}
-
-	private static void avviaTest() {
+	
+	private static ArrayList<Float> getDataFromFile() throws IOException
+	{
+		//il file deve finire con un numero negativo
+		ArrayList<Float> inp =  new ArrayList<>();
+		InputStreamReader tast = new InputStreamReader(new FileInputStream("/home/arkx/TScrivania/data.txt"));
+		BufferedReader buff = new BufferedReader(tast);
+		float n = Float.parseFloat(buff.readLine());
+		while(n>0)
+		{
+			inp.add(n);
+			n = Float.parseFloat(buff.readLine());
+		}
+		return inp;
+	}
+	
+	private static void avviaTestCreazione() {
 		Rete rete;
 		
 		//ottengo il DNA
 		ArrayList<Float> inp =  new ArrayList<>();
 		try {
-			//il file deve finire con un numero negativo
-			InputStreamReader tast = new InputStreamReader(new FileInputStream("/home/arkx/TScrivania/data.txt"));
-			BufferedReader buff = new BufferedReader(tast);
-			float n = Float.parseFloat(buff.readLine());
-			while(n>0)
-			{
-				inp.add(n);
-				n = Float.parseFloat(buff.readLine());
-			}
+			inp = getDataFromFile();
 		}
 		catch (Exception e) {
 			System.out.println(e);
@@ -86,5 +109,26 @@ public class Main {
 			}
 			
 			return inp;
+	}
+	
+	private static void showHelp()
+	{
+		String help = "Rete neurale LEVITE, usare i seguenti parametri \n\n"
+				    + "\t-tc\tavvia sequenza di test per la creazione della rete, recupera i dati dal file data.txt o in sua assenza li richiede da tastiera";
+		System.out.println(help);
+	}
+	
+	private static void avviaTestRete()
+	{
+		Rete rete;
+		try {
+			rete = new Rete(getDataFromFile());
+		}
+		catch(Exception e)
+		{
+			return;
+		}
+		System.out.println("La rete è nata");
+		rete.run();
 	}
 }

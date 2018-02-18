@@ -52,7 +52,7 @@ public class Neuron {
 	{
 		System.out.print("sa: "+soglia_attivazione+"; pesi: ");
 		for(Float f: pesi)
-			System.out.print(f);
+			System.out.print(f+"\t");
 		System.out.println();
 	}
 }

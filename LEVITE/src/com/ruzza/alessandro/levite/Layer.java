@@ -8,11 +8,15 @@ public class Layer {
 	
 	public Layer(ArrayList<Float> gene, int nn)
 	{
+		/*
+		System.out.println("gene Layer con nn= " + nn);
+		for(Float f:gene)
+			System.out.print(f+"\t");*/
 		//la dimensione del gene è dimensione_gene_neurone*n_neuroni
 		neurons = new ArrayList<Neuron>();
 		ArrayList<Float> val = new ArrayList<>();
 		int d = gene.size()/nn;
-		for(int i=0;i<nn;i++)
+		for(int i=0;i<gene.size();i+=d)
 		{
 			val.clear();
 			for(int j=0;j<d;j++)

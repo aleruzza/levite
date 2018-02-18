@@ -13,12 +13,12 @@ public class Rete {
 	public static final int N_HLAYER = 3;
 	
 	private ArrayList<Layer> net;
-	private ArrayList<Float> DNA;
+	//private ArrayList<Float> DNA;
 	
 	public Rete(ArrayList<Float> DNA)
 	{
 		net = new ArrayList<Layer>();
-		this.DNA = DNA;
+		//this.DNA = DNA;
 		int i,f, step; //rappresentano dei segnalibri per orientarsi nel DNA
 		
 		//TODO: controllare che il metodo subList funzioni come mi aspettavo
@@ -28,6 +28,7 @@ public class Rete {
 		//N_NEUR_INPUT*(1+1)
 		step = N_NEUR_INPUT*(1+1);
 		i = 0; f = i + step;
+		System.out.println("Sto generando il layer di input da " +i + " a "+f);
 		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_INPUT));
 		
 		//genero gli hidden layer
@@ -36,9 +37,10 @@ public class Rete {
 		step = N_NEUR_LAYER*(N_NEUR_INPUT+1);
 		for(int j=0;j<N_HLAYER;j++)
 		{
-			i = f+1;
+			i = f;
 			f = i + step;
 			
+			System.out.println("Sto generando l'hidden layer "+j+" da " +i + " a "+f);
 			net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_LAYER));
 			//gli altri hidden layer hanno un gene lungo
 			//N_NEUR_LAYER*(N_NEUR_LAYER+1)
@@ -49,8 +51,9 @@ public class Rete {
 		//il gene di questo layer ha dimensione
 		//N_NEUR_OUTPUT*(N_NEUR_LAYER+1)
 		step = N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
-		i = f+1;
+		i = f;
 		f = i + step;
+		System.out.println("Sto generando il layer di output da " +i + " a "+f);
 		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_OUTPUT));
 	}
 	
@@ -60,6 +63,19 @@ public class Rete {
 		 *	di interruzione (primo valore array < 0), con relativo valore di fitness 
 		 * 	(modulo del codice di interruzione)
 		 */		
+		
+		if(out==null)
+		{
+			//La rete inizia
+			
+		}
+		else
+		{
+			//invia gli output 
+			System.out.println(ConsoleColors.BLUE_BOLD + "Invio gli output" + ConsoleColors.RESET);
+		}
+		
+		//ottiene gli input e li ritorna
 		return null;
 	}
 	
