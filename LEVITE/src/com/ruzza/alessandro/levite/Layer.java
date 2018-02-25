@@ -5,6 +5,14 @@ import java.util.ArrayList;
 public class Layer {
 
 	private ArrayList<Neuron> neurons;
+	private boolean inp = false;
+	public static final boolean LAYER_INPUT = true;
+	
+	public Layer(ArrayList<Float> gene, int nn, boolean inp)
+	{
+		this(gene, nn);
+		this.inp = inp;
+	}
 	
 	public Layer(ArrayList<Float> gene, int nn)
 	{
@@ -39,10 +47,23 @@ public class Layer {
 		 */
 		
 		ArrayList<Float> result = new ArrayList<>();
+		if(inp)
+		{
+			ArrayList<Float>  in = new ArrayList<>();
+			//logica solo per il layer di input
+			for(int i=0;i<Rete.N_NEUR_INPUT;i++)
+			{
+				in.clear();
+				in.add(input.get(i));
+				result.add(neurons.get(i).activate(in));
+			}
+		}
+		else
+		{
 		for(Neuron neuron: neurons)
 		{
 			result.add(neuron.activate(input));
-		}
+		}}
 		return result;
 	}
 	

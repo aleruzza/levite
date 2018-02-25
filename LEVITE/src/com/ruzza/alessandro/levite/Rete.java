@@ -12,6 +12,7 @@ public class Rete {
 	public static final int N_NEUR_LAYER = 5; //ogni layer ha lo stesso numero di neuroni
 	public static final int N_NEUR_OUTPUT = 4;
 	public static final int N_HLAYER = 3;
+	public static final int DIM_DNA = N_NEUR_INPUT*(1+1)+N_NEUR_LAYER*(N_NEUR_INPUT+1)+(N_HLAYER-1)*N_NEUR_LAYER*(N_NEUR_LAYER+1)+N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 	
 	private ArrayList<Layer> net;
 	//private ArrayList<Float> DNA;
@@ -30,7 +31,7 @@ public class Rete {
 		step = N_NEUR_INPUT*(1+1);
 		i = 0; f = i + step;
 		System.out.println("Sto generando il layer di input da " +i + " a "+f);
-		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_INPUT));
+		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_INPUT, Layer.LAYER_INPUT));
 		
 		//genero gli hidden layer
 		//il primo hidden layer ha un gene lungo
@@ -76,6 +77,7 @@ public class Rete {
 			System.out.println("Ecco gli output");
 			for(Float o: out)
 				System.out.print(o+"\t");
+			System.out.println();
 		}
 		
 		//ottiene gli input e li ritorna
@@ -98,8 +100,10 @@ public class Rete {
 		while(inp.get(0)>0)
 		{
 			for(int i=0;i<N_HLAYER+2;i++) {
+				//qua potrebbe esserci un problema
+				res = net.get(i).activate(inp);
 				inp = res;
-				res = net.get(0).activate(inp);
+				System.out.println(res);
 			}
 			inp = this.sendOutput_getInput(res);
 		}
