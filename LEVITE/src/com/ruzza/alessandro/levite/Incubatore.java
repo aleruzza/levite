@@ -1,6 +1,7 @@
 package com.ruzza.alessandro.levite;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 public class Incubatore {
@@ -25,8 +26,9 @@ public class Incubatore {
 	private void nuovaGenerazione(ArrayList<Float> madre, ArrayList<Float> padre)
 	{
 		ArrayList<ArrayList<Float>> ngenerazione = new ArrayList<>();
-		
-		
+		for(int i=0;i<N_INDIVIDUI_GEN;i++)
+			ngenerazione.add(inserisciMutazioni(getFiglio(madre, padre)));
+		generazione = ngenerazione;
 	}
 	
 	private ArrayList<Float> getFiglio(ArrayList<Float> madre, ArrayList<Float> padre)
@@ -64,5 +66,39 @@ public class Incubatore {
 			}
 		}
 		return f;
+	}
+	
+	public void evolvi()
+	{
+		Rete rete;
+		ArrayList<Float> ris = new ArrayList<>();
+		while(true)
+		{
+			ris.clear();
+			for(int i=0;i<N_INDIVIDUI_GEN;i++)
+			{
+				rete = new Rete(generazione.get(i));
+				ris.add(rete.run());
+			}
+			
+			//si cercano i migliori due e si cra una nuova generazione
+			int p = getPosMax(ris);
+			ris.set(p, 0f);
+			int m = getPosMax(ris);
+			
+			nuovaGenerazione(generazione.get(p), generazione.get(m));
+
+		}
+	}
+	
+	private int getPosMax(ArrayList<Float> arr)
+	{
+		int p=0;
+		for(int i=0;i<arr.size();i++)
+		{
+			if(arr.get(i)>arr.get(p))
+				p=i;
+		}
+		return p;
 	}
 }
