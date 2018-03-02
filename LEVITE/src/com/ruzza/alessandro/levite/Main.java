@@ -18,8 +18,11 @@ public class Main {
 						case "-tc":
 							avviaTestCreazione();
 							break;
-						case "-t":
+						case "-tr":
 							avviaTestRete();
+							break;
+						case "-ti":
+							avviaTestIncubatore();
 							break;
 						default:
 							showHelp();
@@ -130,5 +133,10 @@ public class Main {
 		}
 		System.out.println("La rete è nata");
 		rete.run();
+	}
+	
+	private static void avviaTestIncubatore() {
+		Incubatore incubatore = new Incubatore();
+		incubatore.evolvi();
 	}
 }

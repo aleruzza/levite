@@ -1,5 +1,6 @@
 package com.ruzza.alessandro.levite;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -8,14 +9,21 @@ public class Rete {
 	//Da implementare invece nell'Incubatore
 	
 	//COSTANTI CARATTERISTICHE DI CIASCUNA RETE NEURALE
-	public static final int N_NEUR_INPUT = 4;
+	public static final int N_NEUR_INPUT = 1;
 	public static final int N_NEUR_LAYER = 5; //ogni layer ha lo stesso numero di neuroni
-	public static final int N_NEUR_OUTPUT = 4;
+	public static final int N_NEUR_OUTPUT = 1;
 	public static final int N_HLAYER = 3;
 	public static final int DIM_DNA = N_NEUR_INPUT*(1+1)+N_NEUR_LAYER*(N_NEUR_INPUT+1)+(N_HLAYER-1)*N_NEUR_LAYER*(N_NEUR_LAYER+1)+N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 	
+	private FileOutputStream fout;
 	private ArrayList<Layer> net;
+	float inp;
+	float fit;
 	//private ArrayList<Float> DNA;
+	
+	//variabili di test
+	private ArrayList<Float> seni;
+	
 	
 	public Rete(ArrayList<Float> DNA)
 	{
@@ -90,12 +98,66 @@ public class Rete {
 		return in;
 	}
 	
+	private ArrayList<Float> sendOutput_getInput(ArrayList<Float> out, int test){
+		ArrayList<Float> r = null;
+		switch(test)
+		{
+			case 1:
+				if(out==null)
+				{
+					//La rete inizia
+					seni = new ArrayList<>();
+					for(int i=0;i<10;i++)
+						seni.add((float) Math.random());
+					fit = 0;
+				}
+				else
+				{
+					//invia gli output 
+
+					try {
+						//scrivo risultato
+						fout = new FileOutputStream("/home/arkx/TScrivania/logIncubatore.txt",true);
+						for(Float f : out)
+							fout.write((f+"").getBytes());
+						fout.write("\n".getBytes());
+						fout.close();
+						float ris_sperato = (float) (Math.sin(inp*2*Math.PI)+1)/2;
+						fout = new FileOutputStream("/home/arkx/TScrivania/logRS.txt",true);
+								fout.write((ris_sperato+"\n").getBytes());
+						fout.close();
+						fit+=Math.abs(ris_sperato-out.get(0));
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+				
+				//invia gli input
+				if(!seni.isEmpty())
+				{
+					r = new ArrayList<>();
+					r.add(seni.get(0));
+					inp = seni.get(0);
+					seni.remove(0);
+				}
+				else
+				{
+					r = new ArrayList<>();
+					r.add(-fit);
+					
+				}
+			break;
+		}
+		return r;
+	}
 
 	public float run()
 	{
 		//TODO:	funzione che fa funzionare la rete neurale. 
 		//		Restituisce il valore di fitness.
-		ArrayList<Float> inp = this.sendOutput_getInput(null);
+		ArrayList<Float> inp = this.sendOutput_getInput(null,1);
 		ArrayList<Float> res = inp;
 		while(inp.get(0)>0)
 		{
@@ -105,7 +167,7 @@ public class Rete {
 				inp = res;
 				System.out.println(res);
 			}
-			inp = this.sendOutput_getInput(res);
+			inp = this.sendOutput_getInput(res, 1);
 		}
 		
 		float result = -(inp.get(0));

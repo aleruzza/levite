@@ -1,5 +1,6 @@
 package com.ruzza.alessandro.levite;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
@@ -9,6 +10,8 @@ public class Incubatore {
 	private ArrayList<ArrayList<Float>> generazione;
 	private static final int N_INDIVIDUI_GEN = 5;
 	private static final float PROB_MUTAZIONE = 0.3f;
+	private boolean verbose = false;
+	private FileOutputStream log;
 	
 	public Incubatore()
 	{
@@ -18,9 +21,23 @@ public class Incubatore {
 		{
 			generazione.add(new ArrayList<>());
 			
-			for(int j=0;j<Rete.DIM_DNA;j++);
+			for(int j=0;j<Rete.DIM_DNA;j++)
 				generazione.get(i).add((float) Math.random());
 		}
+		
+		try {
+			log = new FileOutputStream("/home/arkx/TScrivania/logIncubatore.txt");
+		}
+		catch(Exception e)
+		{
+			System.out.println("errore nell'apertura del file di log dell'incubatore");
+			e.printStackTrace();
+		}
+	}
+	
+	public Incubatore(boolean v)
+	{
+		verbose=v;
 	}
 	
 	private void nuovaGenerazione(ArrayList<Float> madre, ArrayList<Float> padre)
@@ -72,8 +89,10 @@ public class Incubatore {
 	{
 		Rete rete;
 		ArrayList<Float> ris = new ArrayList<>();
+		
 		while(true)
 		{
+			printGenerazione();
 			ris.clear();
 			for(int i=0;i<N_INDIVIDUI_GEN;i++)
 			{
@@ -100,5 +119,27 @@ public class Incubatore {
 				p=i;
 		}
 		return p;
+	}
+	
+	private void printGenerazione()
+	{
+		try {
+			//log.write((generazione.toString()+"\n").getBytes());
+			//System.out.println((generazione+"\n").getBytes());
+			for(ArrayList<Float> arr: generazione)
+			{
+				for(Float f: arr)
+				{
+					System.out.print(f);
+				}
+				System.out.println();
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("errore nella scrittura sul file log dell'incubatore");
+			e.printStackTrace();
+		}
+		
 	}
 }
