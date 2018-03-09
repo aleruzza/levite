@@ -15,15 +15,10 @@ public class Rete {
 	public static final int N_HLAYER = 3;
 	public static final int DIM_DNA = N_NEUR_INPUT*(1+1)+N_NEUR_LAYER*(N_NEUR_INPUT+1)+(N_HLAYER-1)*N_NEUR_LAYER*(N_NEUR_LAYER+1)+N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 	
-	private FileOutputStream fout;
 	private ArrayList<Layer> net;
 	float inp;
-	float fit;
+	private Body body;
 	//private ArrayList<Float> DNA;
-	
-	//variabili di test
-	private ArrayList<Float> seni;
-	
 	
 	public Rete(ArrayList<Float> DNA)
 	{
@@ -65,6 +60,10 @@ public class Rete {
 		f = i + step;
 		System.out.println("Sto generando il layer di output da " +i + " a "+f);
 		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_OUTPUT));
+		
+		//**** Cambiare in questa riga in base al problema da risolvere *********************
+		body = new CalcolaSen();
+		//***********************************************************************************
 	}
 	
 	private ArrayList<Float> sendOutput_getInput(ArrayList<Float> out){
@@ -73,6 +72,7 @@ public class Rete {
 		 *	di interruzione (primo valore array < 0), con relativo valore di fitness 
 		 * 	(modulo del codice di interruzione)
 		 */		
+			
 		ArrayList<Float> in = new ArrayList<>();
 		if(out==null)
 		{
@@ -82,84 +82,22 @@ public class Rete {
 		else
 		{
 			//invia gli output 
-			System.out.println("Ecco gli output");
-			for(Float o: out)
-				System.out.print(o+"\t");
-			System.out.println();
+			body.sendOutput(out);
 		}
 		
 		//ottiene gli input e li ritorna
-		Scanner scan = new Scanner(System.in);
-		for(int i=0;i<N_NEUR_INPUT;i++)
-		{
-			System.out.print("Inserisci input " + i + " (NB [0;1]) : ");
-			in.add(scan.nextFloat());
-		}
+		in = body.getInput();
 		return in;
 	}
 	
-	private ArrayList<Float> sendOutput_getInput(ArrayList<Float> out, int test){
-		ArrayList<Float> r = null;
-		switch(test)
-		{
-			case 1:
-				if(out==null)
-				{
-					//La rete inizia
-					seni = new ArrayList<>();
-					for(int i=0;i<10;i++)
-						seni.add((float) Math.random());
-					fit = 0;
-				}
-				else
-				{
-					//invia gli output 
-
-					try {
-						//scrivo risultato
-						fout = new FileOutputStream("/home/arkx/TScrivania/logIncubatore.txt",true);
-						for(Float f : out)
-							fout.write((f+"").getBytes());
-						fout.write("\n".getBytes());
-						fout.close();
-						float ris_sperato = (float) (Math.sin(inp*2*Math.PI)+1)/2;
-						fout = new FileOutputStream("/home/arkx/TScrivania/logRS.txt",true);
-								fout.write((ris_sperato+"\n").getBytes());
-						fout.close();
-						fit+=Math.abs(ris_sperato-out.get(0));
-					}catch(Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-				
-				
-				//invia gli input
-				if(!seni.isEmpty())
-				{
-					r = new ArrayList<>();
-					r.add(seni.get(0));
-					inp = seni.get(0);
-					seni.remove(0);
-				}
-				else
-				{
-					r = new ArrayList<>();
-					r.add(-fit);
-					
-				}
-			break;
-		}
-		return r;
-	}
-
+	
 	public float run()
 	{
 		//TODO:	funzione che fa funzionare la rete neurale. 
 		//		Restituisce il valore di fitness.
-		ArrayList<Float> inp = this.sendOutput_getInput(null,1);
+		ArrayList<Float> inp = this.sendOutput_getInput(null);
 		ArrayList<Float> res = inp;
-		while(inp.get(0)>0)
+		while(inp.get(0)>=0)
 		{
 			for(int i=0;i<N_HLAYER+2;i++) {
 				//qua potrebbe esserci un problema
@@ -167,7 +105,7 @@ public class Rete {
 				inp = res;
 				System.out.println(res);
 			}
-			inp = this.sendOutput_getInput(res, 1);
+			inp = this.sendOutput_getInput(res);
 		}
 		
 		float result = -(inp.get(0));
