@@ -9,15 +9,16 @@ public class Rete {
 	//Da implementare invece nell'Incubatore
 	
 	//COSTANTI CARATTERISTICHE DI CIASCUNA RETE NEURALE
-	public static final int N_NEUR_INPUT = 1;
+	public static final int N_NEUR_INPUT = 4;
 	public static final int N_NEUR_LAYER = 5; //ogni layer ha lo stesso numero di neuroni
-	public static final int N_NEUR_OUTPUT = 1;
-	public static final int N_HLAYER = 3;
+	public static final int N_NEUR_OUTPUT = 4;
+	public static final int N_HLAYER = 1;
 	public static final int DIM_DNA = N_NEUR_INPUT*(1+1)+N_NEUR_LAYER*(N_NEUR_INPUT+1)+(N_HLAYER-1)*N_NEUR_LAYER*(N_NEUR_LAYER+1)+N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 	
 	private ArrayList<Layer> net;
 	float inp;
 	private Body body;
+	private boolean verbose = false;
 	//private ArrayList<Float> DNA;
 	
 	public Rete(ArrayList<Float> DNA)
@@ -33,7 +34,8 @@ public class Rete {
 		//N_NEUR_INPUT*(1+1)
 		step = N_NEUR_INPUT*(1+1);
 		i = 0; f = i + step;
-		System.out.println("Sto generando il layer di input da " +i + " a "+f);
+		if(verbose)
+			System.out.println("Sto generando il layer di input da " +i + " a "+f);
 		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_INPUT, Layer.LAYER_INPUT));
 		
 		//genero gli hidden layer
@@ -45,7 +47,8 @@ public class Rete {
 			i = f;
 			f = i + step;
 			
-			System.out.println("Sto generando l'hidden layer "+j+" da " +i + " a "+f);
+			if(verbose)
+				System.out.println("Sto generando l'hidden layer "+j+" da " +i + " a "+f);
 			net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_LAYER));
 			//gli altri hidden layer hanno un gene lungo
 			//N_NEUR_LAYER*(N_NEUR_LAYER+1)
@@ -58,11 +61,13 @@ public class Rete {
 		step = N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 		i = f;
 		f = i + step;
-		System.out.println("Sto generando il layer di output da " +i + " a "+f);
+		
+		if(verbose)
+			System.out.println("Sto generando il layer di output da " +i + " a "+f);
 		net.add( new Layer( new ArrayList<Float>(DNA.subList(i, f)), N_NEUR_OUTPUT));
 		
 		//**** Cambiare in questa riga in base al problema da risolvere *********************
-		body = new CalcolaSen();
+		body = new PlaySnake();
 		//***********************************************************************************
 	}
 	
@@ -103,7 +108,8 @@ public class Rete {
 				//qua potrebbe esserci un problema
 				res = net.get(i).activate(inp);
 				inp = res;
-				System.out.println(res);
+				if(verbose)
+					System.out.println(res);
 			}
 			inp = this.sendOutput_getInput(res);
 		}
@@ -114,6 +120,7 @@ public class Rete {
 	
 	public void printData()
 	{
+		if(verbose)
 		for(int i=0;i<net.size();i++)
 		{
 			System.out.println("Layer "+i);

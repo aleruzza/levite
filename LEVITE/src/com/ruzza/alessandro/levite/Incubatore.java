@@ -8,22 +8,35 @@ import java.util.Random;
 public class Incubatore {
 
 	private ArrayList<ArrayList<Float>> generazione;
-	private static final int N_INDIVIDUI_GEN = 5;
-	private static final float PROB_MUTAZIONE = 0.3f;
+	private static final int N_INDIVIDUI_GEN = 10;
+	private static final float PROB_MUTAZIONE = 0.4f;
 	private boolean verbose = false;
 	private FileOutputStream log;
+	int ng;
 	
 	public Incubatore()
 	{
-		//genero la prima generazione
+		ng=0;
+		/*genero la prima generazione a caso
 		generazione = new ArrayList<>();
 		for(int i=0;i<N_INDIVIDUI_GEN;i++)
 		{
 			generazione.add(new ArrayList<>());
 			
 			for(int j=0;j<Rete.DIM_DNA;j++)
-				generazione.get(i).add((float) Math.random());
+				generazione.get(i).add((float) Math.random()*2);
 		}
+		*/
+		
+		//genero la prima generazione con tutto a 0.5
+		generazione = new ArrayList<>();
+		for(int i=0;i<N_INDIVIDUI_GEN;i++)
+		{
+			generazione.add(new ArrayList<>());
+			for(int j=0;j<Rete.DIM_DNA;j++)
+				generazione.get(i).add(0.5f);
+		}
+		
 		
 		try {
 			log = new FileOutputStream("/home/arkx/TScrivania/logIncubatore.txt");
@@ -42,12 +55,44 @@ public class Incubatore {
 	
 	private void nuovaGenerazione(ArrayList<Float> madre, ArrayList<Float> padre)
 	{
+		ng++;
+		System.out.println(ng);
 		ArrayList<ArrayList<Float>> ngenerazione = new ArrayList<>();
 		for(int i=0;i<N_INDIVIDUI_GEN;i++)
 			ngenerazione.add(inserisciMutazioni(getFiglio(madre, padre)));
 		generazione = ngenerazione;
 	}
 	
+	private void nuovaGenerazione(ArrayList<Float> ris)
+	{
+		ng++;
+		System.out.println(ng);
+		ArrayList<ArrayList<Float>> ngenerazione = new ArrayList<>();
+		//ottengo i 3 migliori
+		for(int i=0;i<3;i++) {
+			if(i==0)
+				ngenerazione.add(generazione.get(0));
+			else
+				ngenerazione.add(inserisciMutazioni(generazione.get(0)));
+			generazione.remove(0);
+		}
+		
+		//aggiungo 2 dei peggiori
+		for(int i=0;i<2;i++)
+		{
+			int n = (int) (Math.random()*3);
+			ngenerazione.add(inserisciMutazioni(generazione.get(n)));
+		}
+		
+		//faccio fare 5 figli
+		for(int i=5;i<N_INDIVIDUI_GEN;i++)
+		{
+			int m = (int) (Math.random())*5;
+			int p = (int) (Math.random())*5;
+			ngenerazione.add(getFiglio(generazione.get(m), generazione.get(p)));
+		}
+		generazione = ngenerazione;
+	}
 	private ArrayList<Float> getFiglio(ArrayList<Float> madre, ArrayList<Float> padre)
 	{
 		ArrayList<Float> son = new ArrayList<>();
@@ -79,7 +124,7 @@ public class Incubatore {
 			{
 				int p = (int) ((Math.random()*10000)%f.size());
 				f.remove(p);
-				f.add(p, (float) Math.random());
+				f.add(p, (float) Math.random()*2);
 			}
 		}
 		return f;
@@ -105,8 +150,8 @@ public class Incubatore {
 			ris.set(p, 0f);
 			int m = getPosMax(ris);
 			
-			nuovaGenerazione(generazione.get(p), generazione.get(m));
-
+			//nuovaGenerazione(generazione.get(p), generazione.get(m));
+			nuovaGenerazione(ris);
 		}
 	}
 	
@@ -123,7 +168,8 @@ public class Incubatore {
 	
 	private void printGenerazione()
 	{
-		try {
+		if(verbose)
+		{try {
 			//log.write((generazione.toString()+"\n").getBytes());
 			//System.out.println((generazione+"\n").getBytes());
 			for(ArrayList<Float> arr: generazione)
@@ -140,6 +186,6 @@ public class Incubatore {
 			System.out.println("errore nella scrittura sul file log dell'incubatore");
 			e.printStackTrace();
 		}
-		
+		}
 	}
 }

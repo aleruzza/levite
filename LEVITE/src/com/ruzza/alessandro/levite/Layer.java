@@ -7,6 +7,7 @@ public class Layer {
 	private ArrayList<Neuron> neurons;
 	private boolean inp = false;
 	public static final boolean LAYER_INPUT = true;
+	private boolean verbose = false;
 	
 	public Layer(ArrayList<Float> gene, int nn, boolean inp)
 	{
@@ -69,6 +70,7 @@ public class Layer {
 	
 	public void printData()
 	{
+		if(verbose)
 		for(int i=0;i<neurons.size();i++)
 		{
 			System.out.println("Neurone "+i);

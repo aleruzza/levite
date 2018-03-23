@@ -38,10 +38,11 @@ public class CalcolaSen implements Body{
 		
 		float differenza = Math.abs(valore_reale - valore_ottenuto) + 0.000001f;
 		fit += 1/differenza;
+		this.write("/home/arkx/TScrivania/delta.txt", differenza+"\n\r");
 		
 		System.out.println(valore_ottenuto);
 		
-		this.write("/home/arkx/TScrivania/out.txt", valore_ottenuto.toString()+",");
+		this.write("/home/arkx/TScrivania/out.txt", valore_ottenuto.toString()+"\n");
 	}
 	
 	@Override
