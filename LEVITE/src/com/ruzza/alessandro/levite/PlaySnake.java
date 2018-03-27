@@ -36,12 +36,13 @@ public class PlaySnake implements Body {
 		    sendChar("w");	  
 		}catch(Exception e)
 		{
+			//closeConnection();
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public ArrayList<Float> getInput() {
+	public ArrayList<Float> getInput() throws Exception {
 		ArrayList<Float> dati = new ArrayList<>();
 		/*for(int j=0;j<4;j++)
 				dati.add(0f);*/
@@ -89,7 +90,8 @@ public class PlaySnake implements Body {
   	  		//per ora divido tutto per 40 che è il valore massimo (fatto sopra)
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			//throw e;
+			closeConnection();
 		}
 		return dati;
 	}
@@ -203,4 +205,13 @@ public class PlaySnake implements Body {
 		}
 	}
 
+	public void closeConnection()
+	{
+		try {
+			clientConnect.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

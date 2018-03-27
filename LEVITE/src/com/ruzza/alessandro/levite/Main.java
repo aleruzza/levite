@@ -123,6 +123,7 @@ public class Main {
 	
 	private static void avviaTestRete()
 	{
+		while(true) {
 		Rete rete;
 		try {
 			rete = new Rete(getDataFromFile());
@@ -132,7 +133,9 @@ public class Main {
 			return;
 		}
 		System.out.println("La rete è nata");
-		rete.run();
+		
+			rete.run();
+		}
 	}
 	
 	private static void avviaTestIncubatore() {

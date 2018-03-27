@@ -9,8 +9,11 @@ public class Incubatore {
 
 	private ArrayList<ArrayList<Float>> generazione;
 	private static final int N_INDIVIDUI_GEN = 10;
-	private static final float PROB_MUTAZIONE = 0.4f;
+	private static final float PROB_MUTAZIONE = 0.6f;
+	private static final float N_PART_PER_GEN = 1;
+	private static final float P_ACC = 10;
 	private boolean verbose = false;
+	public boolean error = false;
 	private FileOutputStream log;
 	int ng;
 	
@@ -63,24 +66,71 @@ public class Incubatore {
 		generazione = ngenerazione;
 	}
 	
+	//funzione per il controllo, genera una generazione a caso
+	private void nuovaGenerazione(ArrayList<Float> ris, boolean controllo)
+	{
+		ng++;
+		if(ng>500)
+		{
+			System.out.println("Arrivato alla generazione 500 fermare il programma");
+			while(true)
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					System.out.println("interrotto sleep");
+				}
+		}	
+		System.out.println(ng);
+		int pm = getPosMax(ris);
+		System.out.println(pm + " best -> "+ris.get(pm));
+		write("/home/arkx/TScrivania/best.txt", ris.get(pm)+"\n");
+		
+		ArrayList<ArrayList<Float>> ngenerazione = new ArrayList<>();
+		
+		for(int i=0;i<N_INDIVIDUI_GEN;i++)
+		{
+			ngenerazione.add(new ArrayList<>());
+			
+			for(int j=0;j<Rete.DIM_DNA;j++)
+				ngenerazione.get(i).add((float) Math.random()*2);
+		}
+		generazione = ngenerazione;
+	}
 	private void nuovaGenerazione(ArrayList<Float> ris)
 	{
 		ng++;
+		if(ng>500)
+		{
+			System.out.println("Arrivato alla generazione 500 fermare il programma");
+			while(true)
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					System.out.println("interrotto sleep");
+				}
+		}	
 		System.out.println(ng);
 		ArrayList<ArrayList<Float>> ngenerazione = new ArrayList<>();
 		//ottengo i 3 migliori
 		for(int i=0;i<3;i++) {
-			if(i==0)
-				ngenerazione.add(generazione.get(0));
+			int pm = getPosMax(ris);
+			if(i==0) {
+				ngenerazione.add(generazione.get(pm));
+				System.out.println(pm + " best -> "+ris.get(pm));
+				write("/home/arkx/TScrivania/best.txt", ris.get(pm)+"\n");
+			}
 			else
-				ngenerazione.add(inserisciMutazioni(generazione.get(0)));
-			generazione.remove(0);
+				ngenerazione.add(inserisciMutazioni(generazione.get(pm)));
+			generazione.remove(pm);
+			ris.remove(pm);
 		}
 		
 		//aggiungo 2 dei peggiori
 		for(int i=0;i<2;i++)
 		{
-			int n = (int) (Math.random()*3);
+			int n = (int) (Math.random()*5);
 			ngenerazione.add(inserisciMutazioni(generazione.get(n)));
 		}
 		
@@ -141,18 +191,41 @@ public class Incubatore {
 			ris.clear();
 			for(int i=0;i<N_INDIVIDUI_GEN;i++)
 			{
-				rete = new Rete(generazione.get(i));
-				ris.add(rete.run());
+				float r = 0;
+				for(int j=0;j<N_PART_PER_GEN;j++) {
+					rete = new Rete(generazione.get(i), this);
+					r+=rete.run();
+				}
+				ris.add(r/N_PART_PER_GEN);
 			}
 			
-			//si cercano i migliori due e si cra una nuova generazione
-			int p = getPosMax(ris);
-			ris.set(p, 0f);
-			int m = getPosMax(ris);
+			//si cercano i migliori due e si crea una nuova generazione
+			//int p = getPosMax(ris);
+			//ris.set(p, 0f);
+			//int m = getPosMax(ris);
 			
+			//controllo se il migliore ha un punteggio maggiore di P_ACC e nel caso lo salvo
+			if(ris.get(getPosMax(ris))>P_ACC)
+			{
+				saveOneDNA(generazione.get(getPosMax(ris)));
+			}
+			
+			if(!error) {
 			//nuovaGenerazione(generazione.get(p), generazione.get(m));
 			nuovaGenerazione(ris);
+			//nuovaGenerazione(ris, true);
+			}
+			else
+			{
+				error = false;
+			}
+			
 		}
+	}
+	
+	private float getProbMutazione()
+	{
+		return PROB_MUTAZIONE;
 	}
 	
 	private int getPosMax(ArrayList<Float> arr)
@@ -186,6 +259,55 @@ public class Incubatore {
 			System.out.println("errore nella scrittura sul file log dell'incubatore");
 			e.printStackTrace();
 		}
+		}
+	}
+	
+	public void saveGenerazione() {
+		// TODO Auto-generated method stub
+		String f = "/home/arkx/TScrivania/lgen.txt";
+		try {
+			FileOutputStream fout = new FileOutputStream(f, true);
+			for(ArrayList<Float> arr: generazione) {
+				for(Float n: arr)
+					fout.write((n+";").getBytes());
+				fout.write(("\n").getBytes());
+			}
+			fout.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void saveOneDNA(ArrayList<Float> dna)
+	{
+		String f = "/home/arkx/TScrivania/goodnn.txt";
+		try {
+			FileOutputStream fout = new FileOutputStream(f, true);
+			for(Float n: dna) {
+					fout.write((n+";").getBytes());
+				fout.write(("\n").getBytes());
+			}
+			fout.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void write(String f, String t) {
+		// TODO Auto-generated method stub
+		try {
+			FileOutputStream fout = new FileOutputStream(f, true);
+			fout.write(t.getBytes());
+			fout.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

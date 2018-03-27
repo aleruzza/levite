@@ -20,6 +20,13 @@ public class Rete {
 	private Body body;
 	private boolean verbose = false;
 	//private ArrayList<Float> DNA;
+	private Incubatore inc;
+	
+	public Rete(ArrayList<Float> DNA, Incubatore inc)
+	{
+		this(DNA);
+		this.inc = inc;
+	}
 	
 	public Rete(ArrayList<Float> DNA)
 	{
@@ -91,7 +98,17 @@ public class Rete {
 		}
 		
 		//ottiene gli input e li ritorna
-		in = body.getInput();
+		try {
+			in = body.getInput();
+		}catch(Exception e)
+		{
+			System.out.println(e);
+			if(inc!=null) {
+				inc.saveGenerazione();
+				inc.error = true;
+			}
+			in.add(0, -1f);
+		}
 		return in;
 	}
 	

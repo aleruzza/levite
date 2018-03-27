@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface Body {
 
-	ArrayList<Float> getInput();
+	ArrayList<Float> getInput() throws Exception;
 	
 	void sendOutput(ArrayList<Float> out);
 	
