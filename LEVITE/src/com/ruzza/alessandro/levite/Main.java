@@ -38,11 +38,11 @@ public class Main {
 		ArrayList<Float> inp =  new ArrayList<>();
 		InputStreamReader tast = new InputStreamReader(new FileInputStream("/home/arkx/TScrivania/data.txt"));
 		BufferedReader buff = new BufferedReader(tast);
-		float n = Float.parseFloat(buff.readLine());
+		float n = Float.parseFloat(buff.readLine().trim());
 		while(n>0)
 		{
 			inp.add(n);
-			n = Float.parseFloat(buff.readLine());
+			n = Float.parseFloat(buff.readLine().trim());
 		}
 		return inp;
 	}

@@ -100,6 +100,8 @@ public class Rete {
 		//ottiene gli input e li ritorna
 		try {
 			in = body.getInput();
+			if(in.size()<1)
+				throw new Exception();
 		}catch(Exception e)
 		{
 			System.out.println(e);
@@ -119,6 +121,7 @@ public class Rete {
 		//		Restituisce il valore di fitness.
 		ArrayList<Float> inp = this.sendOutput_getInput(null);
 		ArrayList<Float> res = inp;
+		
 		while(inp.get(0)>=0)
 		{
 			for(int i=0;i<N_HLAYER+2;i++) {

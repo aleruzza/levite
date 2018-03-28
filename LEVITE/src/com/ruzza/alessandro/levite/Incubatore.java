@@ -9,7 +9,7 @@ public class Incubatore {
 
 	private ArrayList<ArrayList<Float>> generazione;
 	private static final int N_INDIVIDUI_GEN = 10;
-	private static final float PROB_MUTAZIONE = 0.6f;
+	private static final float PROB_MUTAZIONE = 0.5f;
 	private static final float N_PART_PER_GEN = 1;
 	private static final float P_ACC = 10;
 	private boolean verbose = false;
@@ -116,10 +116,12 @@ public class Incubatore {
 		//ottengo i 3 migliori
 		for(int i=0;i<3;i++) {
 			int pm = getPosMax(ris);
-			if(i==0) {
+			if(i==0 || i==1) {
 				ngenerazione.add(generazione.get(pm));
-				System.out.println(pm + " best -> "+ris.get(pm));
-				write("/home/arkx/TScrivania/best.txt", ris.get(pm)+"\n");
+				if(i==0) {
+					System.out.println(pm + " best -> "+ris.get(pm));
+					write("/home/arkx/TScrivania/best.txt", ris.get(pm)+"\n");
+				}
 			}
 			else
 				ngenerazione.add(inserisciMutazioni(generazione.get(pm)));
@@ -287,8 +289,8 @@ public class Incubatore {
 			FileOutputStream fout = new FileOutputStream(f, true);
 			for(Float n: dna) {
 					fout.write((n+";").getBytes());
-				fout.write(("\n").getBytes());
 			}
+			fout.write(("\n").getBytes());
 			fout.close();
 		}
 		catch(Exception e)
