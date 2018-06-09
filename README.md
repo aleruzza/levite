@@ -1,8 +1,8 @@
 # Progetto per tesina di maturità
 Liceo Scientifico Statale Donato Bramante, Magenta. (Opzione scienze applicate)
 
-Autore: Alessandro Ruzza, classe 5^D, anno scolastico 2017-2018.
 
+Autore: Alessandro Ruzza, classe 5^D, anno scolastico 2017-2018.
 Titolo tesina: "Tecniche di intelligenza artificiale studiate in un progetto".
 
 ## Abstract
