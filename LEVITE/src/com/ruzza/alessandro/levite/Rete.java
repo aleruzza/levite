@@ -1,33 +1,58 @@
+/*
+   
+    Copyright 2018 Alessandro Ruzza
+    
+    This file is part of LEVITE.
+
+    Nome-Programma is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Nome-Programma is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Nome-Programma.  If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 package com.ruzza.alessandro.levite;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+//3
 public class Rete {
 	//Questa classe non contiene la logica dell'algoritmo genetico.
 	//Da implementare invece nell'Incubatore
 	
 	//COSTANTI CARATTERISTICHE DI CIASCUNA RETE NEURALE
-	public static final int N_NEUR_INPUT = 4;
-	public static final int N_NEUR_LAYER = 5; //ogni layer ha lo stesso numero di neuroni
-	public static final int N_NEUR_OUTPUT = 4;
-	public static final int N_HLAYER = 1;
+	public static final int N_NEUR_INPUT = 4; 	//3.1.1
+	public static final int N_NEUR_LAYER = 5;	//3.1.2	//ogni layer ha lo stesso numero di neuroni
+	public static final int N_NEUR_OUTPUT = 4;	//3.1.3
+	public static final int N_HLAYER = 1;		//3.1.4
+	//3.1.5
 	public static final int DIM_DNA = N_NEUR_INPUT*(1+1)+N_NEUR_LAYER*(N_NEUR_INPUT+1)+(N_HLAYER-1)*N_NEUR_LAYER*(N_NEUR_LAYER+1)+N_NEUR_OUTPUT*(N_NEUR_LAYER+1);
 	
-	private ArrayList<Layer> net;
-	float inp;
-	private Body body;
-	private boolean verbose = false;
+	private ArrayList<Layer> net;				//3.1.6
+	//float;
+	private Body body;							//3.1.7
+	private boolean verbose = false;			//3.1.8
 	//private ArrayList<Float> DNA;
-	private Incubatore inc;
-	
+	private Incubatore inc;						//3.1.9
+
+	//3.2.1
 	public Rete(ArrayList<Float> DNA, Incubatore inc)
 	{
 		this(DNA);
 		this.inc = inc;
 	}
 	
+	//3.2.2
 	public Rete(ArrayList<Float> DNA)
 	{
 		net = new ArrayList<Layer>();
@@ -78,6 +103,7 @@ public class Rete {
 		//***********************************************************************************
 	}
 	
+	//3.2.3
 	private ArrayList<Float> sendOutput_getInput(ArrayList<Float> out){
 		/*  TODO: funzione che spedisce gli output e attende per ricevere gli input
 		 *  (con uno specifico segnale in caso
@@ -114,7 +140,7 @@ public class Rete {
 		return in;
 	}
 	
-	
+	//3.2.4
 	public float run()
 	{
 		//TODO:	funzione che fa funzionare la rete neurale. 
@@ -125,7 +151,6 @@ public class Rete {
 		while(inp.get(0)>=0)
 		{
 			for(int i=0;i<N_HLAYER+2;i++) {
-				//qua potrebbe esserci un problema
 				res = net.get(i).activate(inp);
 				inp = res;
 				if(verbose)
@@ -138,6 +163,7 @@ public class Rete {
 		return result;
 	}
 	
+	//3.2.5
 	public void printData()
 	{
 		if(verbose)

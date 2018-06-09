@@ -2,19 +2,22 @@ package com.ruzza.alessandro.levite;
 
 import java.util.ArrayList;
 
+//2
 public class Layer {
 
-	private ArrayList<Neuron> neurons;
-	private boolean inp = false;
-	public static final boolean LAYER_INPUT = true;
-	private boolean verbose = false;
+	private ArrayList<Neuron> neurons;					//2.1.1
+	private boolean inp = false;						//2.1.2
+	public static final boolean LAYER_INPUT = true;		//2.1.3
+	private boolean verbose = false;					//2.1.4
 	
+	//2.2.1
 	public Layer(ArrayList<Float> gene, int nn, boolean inp)
 	{
 		this(gene, nn);
 		this.inp = inp;
 	}
 	
+	//2.2.2
 	public Layer(ArrayList<Float> gene, int nn)
 	{
 		/*
@@ -36,6 +39,7 @@ public class Layer {
 		}
 	}
 	
+	//2.2.3
 	public ArrayList<Float> activate(ArrayList<Float> input)
 	{
 		/*
@@ -68,6 +72,7 @@ public class Layer {
 		return result;
 	}
 	
+	//2.2.4
 	public void printData()
 	{
 		if(verbose)

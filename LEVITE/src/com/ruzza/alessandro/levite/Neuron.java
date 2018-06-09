@@ -2,13 +2,15 @@ package com.ruzza.alessandro.levite;
 
 import java.util.ArrayList;
 
+//1
 public class Neuron {
 
-	private float soglia_attivazione;
-	private float alpha = 5; //TODO: scegliere intervallo
-	private ArrayList<Float> pesi;
-	private boolean verbose = false;
+	private float soglia_attivazione;							//1.1.1
+	private float alpha = 5; //TODO: scegliere intervallo       //1.1.2
+	private ArrayList<Float> pesi;								//1.1.3
+	private boolean verbose = false;							//1.1.4
 	
+	//1.2.1
 	public Neuron(ArrayList<Float> gene)
 	{
 		//il gene ha una grandezza uguale a
@@ -20,6 +22,7 @@ public class Neuron {
 		
 	}
 	
+	//1.2.2
 	public float activate(ArrayList<Float> input)
 	{
 		float sum=0,ris;
@@ -36,11 +39,13 @@ public class Neuron {
 		return funzioneDiAttivazione(ris);
 	}
 
+	//1.2.3
 	public int getNDendriti()
 	{
 		return pesi.size();
 	}
 	
+	//1.2.4
 	private float funzioneDiAttivazione(float inp)
 	{
 		//funzione di attivazione
@@ -49,6 +54,7 @@ public class Neuron {
 		return ris;
 	}
 	
+	//1.2.5
 	public void printData()
 	{
 		if(verbose) {

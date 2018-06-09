@@ -141,5 +141,6 @@ public class Main {
 	private static void avviaTestIncubatore() {
 		Incubatore incubatore = new Incubatore();
 		incubatore.evolvi();
+		
 	}
 }

@@ -5,18 +5,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Random;
 
+//4
 public class Incubatore {
 
-	private ArrayList<ArrayList<Float>> generazione;
-	private static final int N_INDIVIDUI_GEN = 10;
-	private static final float PROB_MUTAZIONE = 0.5f;
-	private static final float N_PART_PER_GEN = 1;
-	private static final float P_ACC = 10;
-	private boolean verbose = false;
-	public boolean error = false;
-	private FileOutputStream log;
-	int ng;
+	private ArrayList<ArrayList<Float>> generazione;		//4.1.1
+	private static final int N_INDIVIDUI_GEN = 10;			//4.1.2
+	private static final float PROB_MUTAZIONE = 0.5f;		//4.1.3	
+	private static final int N_PART_PER_GEN = 3;			//4.1.4
+	private static final float P_ACC = 15;					//4.1.5
+	private static final boolean SAVE_EVERY_GEN = false;
+	private boolean verbose = false;						//4.1.6
+	public boolean error = false;							//4.1.7
+	private FileOutputStream log;							//4.1.8
+	int ng;													//4.1.9
 	
+	
+	//4.2.1
 	public Incubatore()
 	{
 		ng=0;
@@ -51,11 +55,14 @@ public class Incubatore {
 		}
 	}
 	
+	//4.2.2
 	public Incubatore(boolean v)
 	{
+		this();
 		verbose=v;
 	}
 	
+	//4.2.3
 	private void nuovaGenerazione(ArrayList<Float> madre, ArrayList<Float> padre)
 	{
 		ng++;
@@ -67,6 +74,7 @@ public class Incubatore {
 	}
 	
 	//funzione per il controllo, genera una generazione a caso
+	//4.2.4
 	private void nuovaGenerazione(ArrayList<Float> ris, boolean controllo)
 	{
 		ng++;
@@ -97,6 +105,8 @@ public class Incubatore {
 		}
 		generazione = ngenerazione;
 	}
+	
+	//4.2.5
 	private void nuovaGenerazione(ArrayList<Float> ris)
 	{
 		ng++;
@@ -141,10 +151,12 @@ public class Incubatore {
 		{
 			int m = (int) (Math.random())*5;
 			int p = (int) (Math.random())*5;
-			ngenerazione.add(getFiglio(generazione.get(m), generazione.get(p)));
+			ngenerazione.add(inserisciMutazioni(getFiglio(generazione.get(m), generazione.get(p))));
 		}
 		generazione = ngenerazione;
 	}
+	
+	//4.2.6
 	private ArrayList<Float> getFiglio(ArrayList<Float> madre, ArrayList<Float> padre)
 	{
 		ArrayList<Float> son = new ArrayList<>();
@@ -168,6 +180,7 @@ public class Incubatore {
 		return son;
 	}
 	
+	//4.2.7
 	private ArrayList<Float> inserisciMutazioni(ArrayList<Float> f)
 	{
 		for(int i=0;i<Math.random()*100;i++)
@@ -182,6 +195,7 @@ public class Incubatore {
 		return f;
 	}
 	
+	//4.2.8
 	public void evolvi()
 	{
 		Rete rete;
@@ -212,6 +226,12 @@ public class Incubatore {
 				saveOneDNA(generazione.get(getPosMax(ris)));
 			}
 			
+			if(SAVE_EVERY_GEN)
+			{
+				for(ArrayList<Float> arr: generazione)
+					saveOneDNA(arr);
+			}
+			
 			if(!error) {
 			//nuovaGenerazione(generazione.get(p), generazione.get(m));
 			nuovaGenerazione(ris);
@@ -225,11 +245,13 @@ public class Incubatore {
 		}
 	}
 	
+	//4.2.9
 	private float getProbMutazione()
 	{
 		return PROB_MUTAZIONE;
 	}
 	
+	//4.2.10
 	private int getPosMax(ArrayList<Float> arr)
 	{
 		int p=0;
@@ -241,6 +263,7 @@ public class Incubatore {
 		return p;
 	}
 	
+	//4.2.11
 	private void printGenerazione()
 	{
 		if(verbose)
@@ -264,6 +287,7 @@ public class Incubatore {
 		}
 	}
 	
+	//4.2.12
 	public void saveGenerazione() {
 		// TODO Auto-generated method stub
 		String f = "/home/arkx/TScrivania/lgen.txt";
@@ -282,6 +306,7 @@ public class Incubatore {
 		}
 	}
 	
+	//4.2.13
 	public void saveOneDNA(ArrayList<Float> dna)
 	{
 		String f = "/home/arkx/TScrivania/goodnn.txt";
@@ -299,7 +324,7 @@ public class Incubatore {
 		}
 	}
 	
-	
+	//4.2.14
 	public void write(String f, String t) {
 		// TODO Auto-generated method stub
 		try {
